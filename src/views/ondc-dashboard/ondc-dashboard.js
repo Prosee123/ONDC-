@@ -41,7 +41,7 @@ const OndcDashboard = () => {
     const dispatch = useDispatch()
 
     React.useEffect(()=>{
-        dispatch(getSellerProducts({name:'proseed',age:24}))
+        dispatch(getSellerProducts({days: 20}))
     },[])
     
     return (

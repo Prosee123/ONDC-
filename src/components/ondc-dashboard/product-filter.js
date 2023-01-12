@@ -14,7 +14,7 @@ const ProductFilter = (props) => {
             {
                 options.map((opt, index) => {
                     return (
-                        <FormControlLabel control={<Checkbox  />} label={opt} />
+                        <FormControlLabel control={<Checkbox />} label={opt} />
                     )
                 })
             }

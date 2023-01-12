@@ -1,46 +1,47 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell, { tableCellClasses } from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
+import Button from '@mui/material/Button';
 import { useSelector } from 'react-redux';
-import { DataGrid, GridToolbarContainer, GridToolbarExport, GridToolbarFilterButton, GridToolbarQuickFilter } from '@mui/x-data-grid';
+import { createSvgIcon } from '@mui/material/utils';
+import { DataGrid, GridToolbarContainer, GridToolbarExport, GridToolbarFilterButton, GridToolbarQuickFilter, gridPaginatedVisibleSortedGridRowIdsSelector, useGridApiContext } from '@mui/x-data-grid';
 
-function CustomToolbar() {
+const getRowsFromCurrentPage = ({ apiRef }) => gridPaginatedVisibleSortedGridRowIdsSelector(apiRef);
+const ExportIcon = createSvgIcon(
+    <path d="M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2z" />,
+    'SaveAlt',
+);
+
+const CustomToolbar = () => {
+    const apiRef = useGridApiContext();
+  
+    const handleExport = (options) => apiRef.current.exportDataAsCsv(options);
+  
+    const buttonBaseProps = {
+      color: 'primary',
+      size: 'small',
+      startIcon: <ExportIcon />,
+    };
+  
     return (
       <GridToolbarContainer>
-        <GridToolbarExport />
-        {/* <GridToolbarFilterButton /> */}
-        {/* <GridToolbarQuickFilter /> */}
+        <Button
+          {...buttonBaseProps}
+          onClick={() => handleExport({ getRowsToExport: getRowsFromCurrentPage })}
+        >
+          Export
+        </Button>
       </GridToolbarContainer>
     );
-  }
+  };
 
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-    [`&.${tableCellClasses.head}`]: {
-        backgroundColor: theme.palette.common.black,
-        color: theme.palette.common.white,
-    },
-    [`&.${tableCellClasses.body}`]: {
-        fontSize: 14,
-    },
-}));
-
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-    '&:nth-of-type(odd)': {
-        backgroundColor: theme.palette.action.hover,
-    },
-    // hide last border
-    '&:last-child td, &:last-child th': {
-        border: 0,
-    },
-}));
-
-
+// function CustomToolbar() {
+//     return (
+//       <GridToolbarContainer>
+//         <GridToolbarExport />
+//         {/* <GridToolbarFilterButton /> */}
+//         {/* <GridToolbarQuickFilter /> */}
+//       </GridToolbarContainer>
+//     );
+//   }
 
 export default function ProductsListSection() {
     const sellerOrdersRedux = useSelector(state => state.dashboardReducer.get('sellerOndcProducts'))
@@ -56,7 +57,7 @@ export default function ProductsListSection() {
         { field: 'seller_np_name', headerName: 'Seller Name', minWidth: 200 },
         { field: 'created_at', headerName: 'Created At', minWidth: 200 },
         { field: 'updated_at', headerName: 'Updated At', minWidth: 200 },
-        { field: 'network_order_id', headerName: 'Nerwork Worder ID', minWidth: 200 },
+        { field: 'network_order_id', headerName: 'Network order ID', minWidth: 200 },
         { field: 'network_transaction_id', headerName: 'Transaction Id', minWidth: 120 },
         { field: 'seller_np_order_id', headerName: 'Seller Order Id', minWidth: 120 },
         { field: 'seller_np_type', headerName: 'Seller Type', minWidth: 120 },
@@ -86,85 +87,18 @@ export default function ProductsListSection() {
                 <DataGrid
                     columns={columns}
                     rows={sellerOrders}
+                    rowsPerPageOptions={[30, 50, 100]}
+                    initialState={{
+                        sellerOrders,
+                        pagination: {
+                          pageSize: 30,
+                        },
+                    }}
                     components={{
                         Toolbar: CustomToolbar,
                     }}
                 />
             </div>
-            {/* <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 700 }} aria-label="customized table">
-                <TableHead>
-
-                    <TableRow>
-                        <StyledTableCell>Buyer Name</StyledTableCell>
-                        <StyledTableCell align="right">Seller Name</StyledTableCell>
-                        <StyledTableCell align="right">Created At</StyledTableCell>
-                        <StyledTableCell align="right">Updated At</StyledTableCell>
-                        <StyledTableCell align="right">Nerwork Worder ID</StyledTableCell>
-                        <StyledTableCell align="right">Transaction Id</StyledTableCell>
-                        <StyledTableCell align="right">Seller Order Id</StyledTableCell>
-                        <StyledTableCell align="right">Seller Type</StyledTableCell>
-                        <StyledTableCell align="right">Order Status</StyledTableCell>
-                        <StyledTableCell align="right">Seller Name</StyledTableCell>
-                        <StyledTableCell align="right">Seller Pincode</StyledTableCell>
-                        <StyledTableCell align="right">Sku Name</StyledTableCell>
-                        <StyledTableCell align="right">Sku Code</StyledTableCell>
-                        <StyledTableCell align="right">Product Price</StyledTableCell>
-                        <StyledTableCell align="right">Order Category</StyledTableCell>
-                        <StyledTableCell align="right">Shipped At</StyledTableCell>
-                        <StyledTableCell align="right">Delivered At</StyledTableCell>
-                        <StyledTableCell align="right">Delivered Type</StyledTableCell>
-                        <StyledTableCell align="right">Logistic Network ID</StyledTableCell>
-                        <StyledTableCell align="right">Logistic Network transaction ID</StyledTableCell>
-                        <StyledTableCell align="right">Delivery City</StyledTableCell>
-                        <StyledTableCell align="right">Delivered Pincode</StyledTableCell>
-                        <StyledTableCell align="right">Cancelled At</StyledTableCell>
-                        <StyledTableCell align="right">Cancelled By</StyledTableCell>
-                        <StyledTableCell align="right">Cancelled Reason</StyledTableCell>
-                        <StyledTableCell align="right">Total Order Value</StyledTableCell>
-
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {sellerOrders?.map((row) => (
-                        <StyledTableRow key={row.buyer_np_name}>
-                            <StyledTableCell component="th" scope="row">
-                                {row.buyer_np_name}
-                            </StyledTableCell>
-                            <StyledTableCell align="right">{row.seller_np_name}</StyledTableCell>
-                            <StyledTableCell align="right">{row.created_at}</StyledTableCell>
-                            <StyledTableCell align="right">{row.updated_at}</StyledTableCell>
-                            <StyledTableCell align="right">{row.network_order_id}</StyledTableCell>
-                            <StyledTableCell align="right">{row.network_transaction_id}</StyledTableCell>
-                            <StyledTableCell align="right">{row.seller_np_order_id}</StyledTableCell>
-                            <StyledTableCell align="right">{row.seller_np_type}</StyledTableCell>
-                            <StyledTableCell align="right">{row.order_status}</StyledTableCell>
-                            <StyledTableCell align="right">{row.name_of_seller}</StyledTableCell>
-                            <StyledTableCell align="right">{row.seller_pincode}</StyledTableCell>
-                            <StyledTableCell align="right">{row.sku_name}</StyledTableCell>
-                            <StyledTableCell align="right">{row.sku_code}</StyledTableCell>
-                            <StyledTableCell align="right">{row.product_price}</StyledTableCell>
-                            <StyledTableCell align="right">{row.order_category}</StyledTableCell>
-                            <StyledTableCell align="right">{row.shipped_at}</StyledTableCell>
-                            <StyledTableCell align="right">{row.delivered_at}</StyledTableCell>
-                            <StyledTableCell align="right">{row.order_category}</StyledTableCell>
-                            <StyledTableCell align="right">{row.shipped_at}</StyledTableCell>
-                            <StyledTableCell align="right">{row.delivered_at}</StyledTableCell>
-                            <StyledTableCell align="right">{row.delivery_type}</StyledTableCell>
-                            <StyledTableCell align="right">{row.logistics_network_order_id}</StyledTableCell>
-                            <StyledTableCell align="right">{row.logistics_network_transaction_id}</StyledTableCell>
-                            <StyledTableCell align="right">{row.delivery_city}</StyledTableCell>
-                            <StyledTableCell align="right">{row.delivery_pincode}</StyledTableCell>
-                            <StyledTableCell align="right">{row.cancelled_at}</StyledTableCell>
-                            <StyledTableCell align="right">{row.cancelled_by}</StyledTableCell>
-                            <StyledTableCell align="right">{row.cancellation_reason}</StyledTableCell>
-                            <StyledTableCell align="right">{row.total_order_value}</StyledTableCell>
-
-                        </StyledTableRow>
-                    ))}
-                </TableBody>
-            </Table>
-        </TableContainer> */}
         </>
     );
 }

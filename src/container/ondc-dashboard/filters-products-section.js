@@ -22,8 +22,8 @@ const FiltersProductsSection = (props) => {
     const classes = useStyles();
 
     return (
-        <Grid container spacing={2}>
-            <Grid item xs={3}>
+        <Grid container spacing={0}>
+            {/* <Grid item xs={3}>
                 <div className={classes.filtersAndSort}>
                     <h3>Filter By</h3>
                     <ProductFilter options={
@@ -57,8 +57,8 @@ const FiltersProductsSection = (props) => {
                         type='Bello'
                     />
                 </div>
-            </Grid>
-            <Grid item xs={9}>
+            </Grid> */}
+            <Grid item xs={12}>
                 <ProductsListSection />
             </Grid>
         </Grid>

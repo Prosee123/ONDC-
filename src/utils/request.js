@@ -3,10 +3,9 @@ import axios from "axios";
 const SERVER_REQUEST_URL = getRequestUrl()
 
 function callApi(options, headers) {
-    options.url = `${SERVER_REQUEST_URL}/api/${options.url}`;
-    // options.url = `http://34.93.193.139/${options.url}`;
+    // options.url = `${SERVER_REQUEST_URL}/api/${options.url}`;
+    options.url = options.url;
     options.headers = options.headers ? { ...options.headers, ...headers } : headers;
-    options.body = options.params;
     console.log(options)
     return axios(options)
         .then(res => Promise.resolve(res.data))

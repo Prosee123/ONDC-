@@ -6,3 +6,15 @@ export function getSellerProducts(payload) {
         payload
     }
 }
+export function verifyUserLogin(payload) {
+    return {
+        type: constants.VERIFY_USER_LOGIN,
+        payload
+    }
+}
+export function onUserLogout(payload) {
+    return {
+        type: constants.ON_USER_LOGOUT,
+        payload
+    }
+}

@@ -6,3 +6,9 @@ export function getSellerProducts(payload) {
         payload
     }
 }
+export function verifyUserLogin(payload) {
+    return {
+        type: constants.VERIFY_USER_LOGIN,
+        payload
+    }
+}

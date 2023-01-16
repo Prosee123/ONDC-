@@ -49,6 +49,7 @@ const OndcDashboard = () => {
                 <div className={classes.dashboardLogoSearch}>
                     <img className={classes.ondcLogo} src='https://i0.wp.com/www.smartprix.com/bytes/wp-content/uploads/2022/06/government-optimistic-of-taking-ondc-global-says-dpiit-official-photoutils.com_.jpeg?fit=1200%2C900&ssl=1' />
                     {/* <HeaderSearch /> */}
+                    
                 </div>
                 <div className={classes.filtersAndProductsSection}>
                     <FiltersProductsSection/>

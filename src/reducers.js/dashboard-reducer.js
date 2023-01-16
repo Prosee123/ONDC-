@@ -8,7 +8,6 @@ const initialState = fromJS({
 
 const reducerFunction = {
     [STORE_SELLER_PRODUCTS]: (state, payload) => {
-        console.log('reducer',payload);
         let newState = state.set('sellerOndcProducts', fromJS(payload));
         return newState;
     },

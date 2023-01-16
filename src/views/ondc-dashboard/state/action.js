@@ -12,3 +12,9 @@ export function verifyUserLogin(payload) {
         payload
     }
 }
+export function onUserLogout(payload) {
+    return {
+        type: constants.ON_USER_LOGOUT,
+        payload
+    }
+}

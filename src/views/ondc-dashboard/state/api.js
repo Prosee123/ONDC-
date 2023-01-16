@@ -19,3 +19,12 @@ export const getSellerOndcOrdersApi = (payload) => {
     }
     return request(options);
   }
+  export const onUserLogout = (payload) => {
+
+    const options = {
+      url: 'http://localhost:5001/v1/auth/logout',
+      method: 'post',
+      data: payload,
+    }
+    return request(options);
+  }

@@ -14,7 +14,7 @@ const reducerFunction = {
     },
     [STORE_REGISTERED_USER_INFO]: (state, payload) => {
         let newState = state.set('storeRegisteredUserInfo', fromJS(payload));
-        localStorage.setItem('login_access_token',payload.tokens.access.token)
+        localStorage.setItem('login_access_token',payload.tokens.refresh.token)
         return newState;
     },
 };

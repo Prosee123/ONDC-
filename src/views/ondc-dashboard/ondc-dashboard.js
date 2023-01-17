@@ -11,6 +11,7 @@ import FiltersProductsSection from '../../container/ondc-dashboard/filters-produ
 import { getSellerProducts } from './state/action';
 import { useDispatch } from 'react-redux';
 import { onUserLogout } from './state/action';
+
 const useStyles = makeStyles({
     ondcDashboard: {
         //   background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
@@ -31,7 +32,7 @@ const useStyles = makeStyles({
     ondcLogo: {
         width: '120px',
     },
-    filtersAndProductsSection:{
+    filtersAndProductsSection: {
         display: 'flex',
         alignItems: 'center',
     }
@@ -42,16 +43,20 @@ const OndcDashboard = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate();
 
-    React.useEffect(()=>{
-        dispatch(getSellerProducts({days: 20}))
-    },[])
-    const onSuccessLogout=()=>{
+    React.useEffect(() => {
+        const query = {
+            per_page: 5,
+            page: 1
+        }
+        dispatch(getSellerProducts({ currentQuery: query, type: 'initial' }))
+    }, [])
+    const onSuccessLogout = () => {
         navigate('/')
     }
-    const onLogout=()=>{
+    const onLogout = () => {
         const payload = {
-            refreshToken : localStorage.getItem('login_access_token'),
-            callFn:onSuccessLogout
+            refreshToken: localStorage.getItem('login_access_token'),
+            callFn: onSuccessLogout
         }
         dispatch(onUserLogout(payload))
     }
@@ -66,7 +71,7 @@ const OndcDashboard = () => {
 
                 </div>
                 <div className={classes.filtersAndProductsSection}>
-                    <FiltersProductsSection/>
+                    <FiltersProductsSection />
                 </div>
             </div>
         </Container>

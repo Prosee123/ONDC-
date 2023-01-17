@@ -1,10 +1,11 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { createSvgIcon } from '@mui/material/utils';
 import fileSaver from 'file-saver';
-import { getSellerOndcOrdersApi } from '../../views/ondc-dashboard/state/api';
+import { exportOrderCSVApi } from '../../views/ondc-dashboard/state/api';
 import { Parser } from 'json2csv';
+import { getSellerProducts } from '../../views/ondc-dashboard/state/action';
 import { DataGrid, GridToolbarContainer, GridToolbarExport, GridToolbarFilterButton, GridToolbarQuickFilter, gridPaginatedVisibleSortedGridRowIdsSelector, useGridApiContext } from '@mui/x-data-grid';
 
 const getRowsFromCurrentPage = ({ apiRef }) => gridPaginatedVisibleSortedGridRowIdsSelector(apiRef);
@@ -49,15 +50,24 @@ const CustomToolbar = () => {
 //   }
 
 export default function ProductsListSection() {
-  const sellerOrdersRedux = useSelector(state => state.dashboardReducer.get('sellerOndcProducts'))
-  const sellerOrders = React.useMemo(() => {
-    let dt = []
+  const dispatch = useDispatch()
+  const sellerOrdersRedux = useSelector(state => state.dashboardReducer.get('sellerOndcProducts'));
+
+  const { sellerOrders, orderArray, totalRecords,currentQuery } = React.useMemo(() => {
+    let sellerOrders = [], orderArray = [], totalRecords = 0,currentQuery={}
     if (sellerOrdersRedux) {
-      dt = sellerOrdersRedux.toJS()
+      let dt = sellerOrdersRedux.toJS();
+      currentQuery = dt.currentQuery
+      sellerOrders = dt.ondcDt;
+      totalRecords = dt.totalRecords
+      // let items = { ...sellerOrders };
+      // orderArray = concateArray(items);
+      orderArray = dt.ondcOrderArray;
     }
-    return dt
+    return { sellerOrders,orderArray,totalRecords,currentQuery }
   }, [sellerOrdersRedux]);
 
+  console.log('sellerOrders', orderArray)
   const columns = [
     { field: 'buyer_np_name', headerName: 'Buyer Name', minWidth: 200 },
     { field: 'seller_np_name', headerName: 'Seller Name', minWidth: 200 },
@@ -89,28 +99,36 @@ export default function ProductsListSection() {
 
   const onGetReport = async () => {
     const dataType = 'text/csv';
-    const payload = { days: 20 }
+    const payload = { days: 30 }
 
-    const res = await getSellerOndcOrdersApi(payload);
-    const json2csvParser = new Parser();
-    const csvRes = json2csvParser.parse(res);
-    
+    const res = await exportOrderCSVApi(payload);
+
+    // const json2csvParser = new Parser();
+    // const csvRes = json2csvParser.parse(orderArray);
+
     if (res) {
-      const fileBlob = new Blob([csvRes], { type: dataType });
+      const fileBlob = new Blob([res], { type: dataType });
       fileSaver.saveAs(fileBlob, 'ondc_reports.csv');
     }
   }
 
+  const onLoadMore = () => {
+    const query = {
+      per_page: 5,
+      page: currentQuery.page+1
+    }
+    dispatch(getSellerProducts({ currentQuery: query, type: 'pagination' }))
+  }
   return (
     <>
       <div style={{ height: 540, width: '100%' }}>
         <Button onClick={onGetReport}> Export </Button>
         <DataGrid
           columns={columns}
-          rows={sellerOrders}
+          rows={orderArray}
           rowsPerPageOptions={[30, 50, 100]}
           initialState={{
-            sellerOrders,
+            orderArray,
             pagination: {
               pageSize: 30,
             },
@@ -119,6 +137,7 @@ export default function ProductsListSection() {
             Toolbar: CustomToolbar,
           }}
         />
+        <Button disabled={totalRecords === orderArray?.length} onClick={onLoadMore}> Load More {totalRecords - orderArray?.length} </Button>
       </div>
     </>
   );

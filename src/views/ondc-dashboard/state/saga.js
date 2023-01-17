@@ -4,9 +4,9 @@ import * as api from './api';
 
 function* getSellerProducts({ payload }) {
     try {
-        const response = yield api.getSellerOndcOrdersApi(payload);
+        const response = yield api.getSellerOndcOrdersApi(payload.currentQuery);
         if (response) {
-            yield put({ type: constants.STORE_SELLER_PRODUCTS, payload: response });
+            yield put({ type: constants.STORE_SELLER_PRODUCTS, payload: { response: response, fromAction: payload } });
         }
     } catch (e) {
         console.log('error', e)

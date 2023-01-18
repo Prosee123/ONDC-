@@ -121,18 +121,15 @@ export default function ProductsListSection() {
   }
   return (
     <>
-      <div style={{ height: 540, width: '100%' }}>
+      <div style={{ height: '70vh', width: '100%' }}>
         <Button onClick={onGetReport}> Export </Button>
         <DataGrid
           columns={columns}
           rows={orderArray}
-          rowsPerPageOptions={[30, 50, 100]}
           initialState={{
             orderArray,
-            pagination: {
-              pageSize: 30,
-            },
           }}
+          hideFooter={true}
           components={{
             Toolbar: CustomToolbar,
           }}

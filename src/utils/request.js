@@ -3,8 +3,9 @@ import axios from "axios";
 const SERVER_REQUEST_URL = getRequestUrl()
 
 function callApi(options, headers) {
-    // options.url = `${SERVER_REQUEST_URL}/api/${options.url}`;
-    options.url = options.url;
+    options.data = {name:options.name,params:options.params};
+    options.url = `${process.env.REACT_APP_REQUEST_API_URL}/v1/intercept`;
+    options.method = 'post';
     options.headers = options.headers ? { ...options.headers, ...headers } : headers;
     console.log(options)
     return axios(options)

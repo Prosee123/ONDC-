@@ -1,11 +1,16 @@
 const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
 const axios = require('axios');
-const { authService, userService, tokenService, emailService } = require('../services');
+const { authService, userService, tokenService, emailService, interceptService } = require('../services');
 
 const index = catchAsync(async (req, res) => {
-    
-  res.status(httpStatus.CREATED).send({ user, tokens });
+  const mappedResponse = await interceptService.processInterceptRequest(req.body);
+  console.log(mappedResponse)
+  if(mappedResponse){
+    res.status(mappedResponse.status).send(mappedResponse.body);
+  }else{
+    res.status(httpStatus.BAD_REQUEST).send({message:'Invalid Request'});
+  }
 });
 module.exports={
     index

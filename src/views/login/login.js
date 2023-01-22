@@ -57,7 +57,6 @@ const Login = () => {
     if (isEmpty) {
       let emailReg = new RegExp("[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$")
       if (emailReg.test(userRef.current.email)) {
-        console.log('emial_true')
         const payload = {
           ...userRef.current,
           callFn: onSuccessLogin
@@ -67,7 +66,6 @@ const Login = () => {
       }
 
       else {
-        console.log('emial_true')
         setEmailError(true)
       }
       setError(false)
@@ -75,7 +73,6 @@ const Login = () => {
     else { setError(true) }
   }
   const onSuccessLogin = () => {
-    console.log('login')
     navigate("/dashboard")
   }
   return (

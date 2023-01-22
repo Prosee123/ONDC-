@@ -5,7 +5,6 @@ const { authService, userService, tokenService, emailService, interceptService }
 
 const index = catchAsync(async (req, res) => {
   const mappedResponse = await interceptService.processInterceptRequest(req.body);
-  console.log(mappedResponse)
   if(mappedResponse){
     res.status(mappedResponse.status).send(mappedResponse.body);
   }else{

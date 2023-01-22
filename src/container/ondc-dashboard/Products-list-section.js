@@ -67,7 +67,6 @@ export default function ProductsListSection() {
     return { sellerOrders,orderArray,totalRecords,currentQuery }
   }, [sellerOrdersRedux]);
 
-  console.log('sellerOrders', orderArray)
   const columns = [
     { field: 'buyer_np_name', headerName: 'Buyer Name', minWidth: 200 },
     { field: 'seller_np_name', headerName: 'Seller Name', minWidth: 200 },
@@ -129,7 +128,7 @@ export default function ProductsListSection() {
           initialState={{
             orderArray,
           }}
-          hideFooter={true}
+          hideFooter
           components={{
             Toolbar: CustomToolbar,
           }}

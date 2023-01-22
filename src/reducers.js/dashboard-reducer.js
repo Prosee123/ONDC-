@@ -21,7 +21,6 @@ const reducerFunction = {
             let concatOndcDt = prevData.ondcOrderArray.concat(response.rows);
             ondcData = state.set('sellerOndcProducts', fromJS({ ondcDt: response, ondcOrderArray:concatOndcDt, totalRecords: response.all_records_count, currentQuery: currentQuery }))
         }
-        console.log('sellerOrders',ondcData)
         return ondcData
     },
     [STORE_REGISTERED_USER_INFO]: (state, payload) => {

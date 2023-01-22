@@ -4,7 +4,6 @@ const { gateway } = require("../config/config");
 
 const processInterceptRequest = async(requestPayload)=>{
     const mappedObj = apiMapper(requestPayload);
-    console.log(mappedObj);
     if(mappedObj){
         const options={
             url:`${gateway}/api/${mappedObj.url}`,
@@ -20,7 +19,6 @@ const processInterceptRequest = async(requestPayload)=>{
         return axios(options).then((res)=>{
             return {status:res.status,body:res.data};
         }).catch((err)=>{
-            console.log('headers',err);
             const errorObj = {};
             if(err.data){
                 errorObj.status = err.data.status;

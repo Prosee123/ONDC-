@@ -9,7 +9,7 @@ function* getSellerProducts({ payload }) {
             yield put({ type: constants.STORE_SELLER_PRODUCTS, payload: { response: response, fromAction: payload } });
         }
     } catch (e) {
-        console.log('error', e)
+        console.error('error', e)
     }
 }
 function* verifyUserEmail({ payload }) {
@@ -22,7 +22,7 @@ function* verifyUserEmail({ payload }) {
             yield put({ type: constants.STORE_REGISTERED_USER_INFO, payload: response });
         }
     } catch (e) {
-        console.log('error', e)
+        console.error('error', e)
     }
 }
 
@@ -36,7 +36,7 @@ function* onUserLogout({ payload }) {
             localStorage.removeItem(('login_access_token'))
         // }
     } catch (e) {
-        console.log('error', e)
+        console.error('error', e)
     }
 }
 

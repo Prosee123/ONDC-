@@ -1,16 +1,17 @@
 import { getRequestUrl } from "./miscellaneous/mics";
 import axios from "axios";
-const SERVER_REQUEST_URL = getRequestUrl()
+// const SERVER_REQUEST_URL = getRequestUrl();
+
+axios.defaults.baseURL = getRequestUrl();
 
 function callApi(options, headers) {
-    options.data = {name:options.name,params:options.params};
-    options.url = `${process.env.REACT_APP_REQUEST_API_URL}/v1/intercept`;
+    options.data = options.data || { name: options.name, params: options.params };
+    options.url = options.url || `/v1/intercept`;
     options.method = 'post';
     options.headers = options.headers ? { ...options.headers, ...headers } : headers;
-    console.log(options)
     return axios(options)
         .then(res => Promise.resolve(res.data))
-        .catch(error => console.log('error',error));
+        .catch(error => console.error('error',error));
 }
 
 export default async function request(options) {
@@ -25,6 +26,6 @@ export default async function request(options) {
     let res = "";
     res = callApi(options, defaultHeaders).then((val) => {
         return val
-    }).catch(err => console.log(err));
+    }).catch(err => console.error(err));
     return res;
 }

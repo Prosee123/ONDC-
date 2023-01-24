@@ -10,12 +10,12 @@ export const getSellerOndcOrdersApi = (payload) => {
 };
 export const exportOrderCSVApi = (payload) => {
   const options = {
-    name: 'R_GET_ONDC_ORDERS',
+    name: 'R_GET_ONDC_ORDERS_CSV',
     params: { format: 'csv' },
     method: 'post',
     data: payload,
   };
-  return request(options);
+  return request(options, { Accept: 'text/csv' });
 };
 export const verifyUserLoginApi = (payload) => {
   const options = {

@@ -15,7 +15,7 @@ export const exportOrderCSVApi = (payload) => {
     method: 'post',
     data: payload,
   };
-  return request(options);
+  return request(options, { Accept: 'text/csv' });
 };
 export const verifyUserLoginApi = (payload) => {
   const options = {

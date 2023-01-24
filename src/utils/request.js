@@ -22,7 +22,11 @@ export default async function request(options) {
         'Access-Control-Allow-Origin': '*',
         // 'Host': 'default.ndhgo.com'
     };
-
+    
+    // for csv export bur we need to chnage in response headers
+    if(options.name === 'R_GET_ONDC_ORDERS_CSV'){
+        defaultHeaders['Accept'] = 'text/csv'
+    }
     let res = "";
     res = callApi(options, defaultHeaders).then((val) => {
         return val

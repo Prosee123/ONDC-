@@ -94,7 +94,7 @@ const Login = () => {
           <TextField
             id="outlined-search"
             label="password"
-            type="text"
+            type="password"
             fullWidth
             onChange={(event) => getUserDet('password', event)}
           />

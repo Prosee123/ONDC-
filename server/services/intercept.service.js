@@ -11,7 +11,6 @@ const processInterceptRequest = async (requestPayload) => {
       data: mappedObj.params,
       headers: {
         Accept: '*/*',
-        // 'Content-Disposition': "attachment",
         'Cache-Control': 'no-cache',
         'Access-Control-Allow-Origin': '*',
         ...(gatewayClientToken && { 'Client-Token': gatewayClientToken }),

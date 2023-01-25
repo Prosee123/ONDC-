@@ -17,7 +17,6 @@ const processInterceptRequest = async (requestPayload) => {
         ...(gatewayClientToken && { 'Client-Token': gatewayClientToken }),
       },
     };
-    console.log(options);
     return axios(options)
       .then((res) => {
         return { status: res.status, body: res.data };

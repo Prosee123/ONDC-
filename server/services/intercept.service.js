@@ -1,27 +1,28 @@
 const { default: axios } = require('axios');
 const apiMapper = require('../config/apiMapper');
-const { gateway } = require('../config/config');
+const { gateway,gatewayClientToken } = require('../config/config');
 
 const processInterceptRequest = async (requestPayload) => {
-    const mappedObj = apiMapper(requestPayload);
+  const mappedObj = apiMapper(requestPayload);
   if (mappedObj) {
     const options = {
-      url: `${gateway}/api/${mappedObj.url}`,
+      url: `${gateway}/${mappedObj.url}`,
       method: mappedObj.method,
       data: mappedObj.params,
       headers: {
         Accept: '*/*',
         'Cache-Control': 'no-cache',
         'Access-Control-Allow-Origin': '*',
+        ...(gatewayClientToken && { 'Client-Token': gatewayClientToken }),
       },
     };
     return axios(options)
-        .then((res) => {
+      .then((res) => {
         return { status: res.status, body: res.data };
       })
       .catch((err) => {
-          console.error("intercept.service.error:",err)
-          const errorObj = {};
+        console.error('intercept.service.error:', err);
+        const errorObj = {};
         if (err.data) {
           errorObj.status = err.data.status;
           errorObj.body = err.data;

@@ -12,6 +12,8 @@ import { getSellerProducts } from './state/action';
 import { useDispatch } from 'react-redux';
 import { onUserLogout } from './state/action';
 
+import ondcLogo from '../../assets/ondc_logo.png';
+
 const useStyles = makeStyles({
     ondcDashboard: {
         //   background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
@@ -45,7 +47,7 @@ const OndcDashboard = () => {
 
     React.useEffect(() => {
         const query = {
-            per_page: 5,
+            per_page: 20,
             page: 1
         }
         dispatch(getSellerProducts({ currentQuery: query, type: 'initial' }))
@@ -60,23 +62,20 @@ const OndcDashboard = () => {
         }
         dispatch(onUserLogout(payload))
     }
-
     return (
-        <Container maxWidth>
-            <div className={classes.ondcDashboard}>
-                <div className={classes.dashboardLogoSearch}>
-                    <img className={classes.ondcLogo} src='https://i0.wp.com/www.smartprix.com/bytes/wp-content/uploads/2022/06/government-optimistic-of-taking-ondc-global-says-dpiit-official-photoutils.com_.jpeg?fit=1200%2C900&ssl=1' />
-                    {/* <HeaderSearch /> */}
-                    <Button onClick={onLogout}> LogOut </Button>
-
-                </div>
-                <div className={classes.filtersAndProductsSection}>
-                    <FiltersProductsSection />
-                </div>
-            </div>
-        </Container>
-
-    )
+      <Container maxWidth>
+        <div className={classes.ondcDashboard}>
+          <div className={classes.dashboardLogoSearch}>
+            <img className={classes.ondcLogo} src={ondcLogo} />
+            {/* <HeaderSearch /> */}
+            <Button onClick={onLogout}> LogOut </Button>
+          </div>
+          <div className={classes.filtersAndProductsSection}>
+            <FiltersProductsSection />
+          </div>
+        </div>
+      </Container>
+    );
 }
 
 export default OndcDashboard

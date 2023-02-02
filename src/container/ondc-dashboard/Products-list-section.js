@@ -113,7 +113,7 @@ export default function ProductsListSection() {
 
   const onLoadMore = () => {
     const query = {
-      per_page: 5,
+      per_page: 20,
       page: currentQuery.page+1
     }
     dispatch(getSellerProducts({ currentQuery: query, type: 'pagination' }))

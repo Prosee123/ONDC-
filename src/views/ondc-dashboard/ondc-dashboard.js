@@ -45,7 +45,7 @@ const OndcDashboard = () => {
 
     React.useEffect(() => {
         const query = {
-            per_page: 5,
+            per_page: 20,
             page: 1
         }
         dispatch(getSellerProducts({ currentQuery: query, type: 'initial' }))
@@ -60,12 +60,11 @@ const OndcDashboard = () => {
         }
         dispatch(onUserLogout(payload))
     }
-
     return (
         <Container maxWidth>
             <div className={classes.ondcDashboard}>
                 <div className={classes.dashboardLogoSearch}>
-                    <img className={classes.ondcLogo} src='https://i0.wp.com/www.smartprix.com/bytes/wp-content/uploads/2022/06/government-optimistic-of-taking-ondc-global-says-dpiit-official-photoutils.com_.jpeg?fit=1200%2C900&ssl=1' />
+                    <img className={classes.ondcLogo} src='https://ndh.imgix.net/ndh-assets/img/ondc_logo.png' />
                     {/* <HeaderSearch /> */}
                     <Button onClick={onLogout}> LogOut </Button>
 

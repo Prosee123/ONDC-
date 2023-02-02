@@ -12,6 +12,8 @@ import { getSellerProducts } from './state/action';
 import { useDispatch } from 'react-redux';
 import { onUserLogout } from './state/action';
 
+import ondcLogo from '../../assets/ondc_logo.png';
+
 const useStyles = makeStyles({
     ondcDashboard: {
         //   background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
@@ -61,21 +63,19 @@ const OndcDashboard = () => {
         dispatch(onUserLogout(payload))
     }
     return (
-        <Container maxWidth>
-            <div className={classes.ondcDashboard}>
-                <div className={classes.dashboardLogoSearch}>
-                    <img className={classes.ondcLogo} src='https://ndh.imgix.net/ndh-assets/img/ondc_logo.png' />
-                    {/* <HeaderSearch /> */}
-                    <Button onClick={onLogout}> LogOut </Button>
-
-                </div>
-                <div className={classes.filtersAndProductsSection}>
-                    <FiltersProductsSection />
-                </div>
-            </div>
-        </Container>
-
-    )
+      <Container maxWidth>
+        <div className={classes.ondcDashboard}>
+          <div className={classes.dashboardLogoSearch}>
+            <img className={classes.ondcLogo} src={ondcLogo} />
+            {/* <HeaderSearch /> */}
+            <Button onClick={onLogout}> LogOut </Button>
+          </div>
+          <div className={classes.filtersAndProductsSection}>
+            <FiltersProductsSection />
+          </div>
+        </div>
+      </Container>
+    );
 }
 
 export default OndcDashboard

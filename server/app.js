@@ -58,6 +58,7 @@ app.use('/ping', (req, res, next) => {
 app.use('/v1', routes);
 
 app.use(express.static(path.resolve('build')));
+app.use('*', express.static(path.resolve('build')));
 
 // send back a 404 error for any unknown api request
 app.use((req, res, next) => {

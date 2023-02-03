@@ -12,8 +12,6 @@ import { getSellerProducts } from './state/action';
 import { useDispatch } from 'react-redux';
 import { onUserLogout } from './state/action';
 
-import ondcLogo from '../../assets/ondc_logo.png';
-
 const useStyles = makeStyles({
     ondcDashboard: {
         //   background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
@@ -44,6 +42,7 @@ const OndcDashboard = () => {
     const classes = useStyles();
     const dispatch = useDispatch()
     const navigate = useNavigate();
+    const ondcLogo = 'https://ndh.imgix.net/ndh-assets/img/ondc_logo.png';
 
     React.useEffect(() => {
         const query = {

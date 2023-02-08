@@ -1,9 +1,16 @@
+const { omit } = require("lodash");
+
 function apiMapper(requestBody) {
   switch (requestBody.name) {
     case 'R_GET_ONDC_ORDERS':
-      return { method: 'post', params: requestBody.params, url: 'order-ms/ondc_dashboard/orders' };
     case 'R_GET_ONDC_ORDERS_CSV':
-      return { method: 'post', params: requestBody.params, url: 'order-ms/ondc_dashboard/orders' };
+      console.log(omit(requestBody, ['params', 'name']));
+      return {
+        method: 'post',
+        params: requestBody.params,
+        data: omit(requestBody, ['params','name']),
+        url: 'order-ms/ondc_dashboard/orders',
+      };
     default:
       return null;
   }

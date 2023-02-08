@@ -3,8 +3,8 @@ import request from '../../../utils/request';
 export const getSellerOndcOrdersApi = (payload) => {
   const options = {
     name: 'R_GET_ONDC_ORDERS',
-    params: payload,
     method: 'post',
+    ...payload,
   };
   return request(options);
 };

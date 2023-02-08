@@ -44,13 +44,6 @@ const OndcDashboard = () => {
     const navigate = useNavigate();
     const ondcLogo = 'https://ndh.imgix.net/ndh-assets/img/ondc_logo.png';
 
-    React.useEffect(() => {
-        const query = {
-            per_page: 20,
-            page: 1
-        }
-        dispatch(getSellerProducts({ currentQuery: query, type: 'initial' }))
-    }, [])
     const onSuccessLogout = () => {
         navigate('/')
     }

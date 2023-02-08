@@ -101,7 +101,7 @@ const Login = () => {
           {error && <p style={{ color: 'red', textAlign: 'center' }}>Required Fields</p>}
         </div>
 
-        <Button onClick={onSave} fullWidth variant="contained" size="large">Save </Button>
+        <Button onClick={onSave} fullWidth variant="contained" size="large">Login </Button>
       </div>
     </div>
   )

@@ -1,6 +1,6 @@
 const { default: axios } = require('axios');
 const apiMapper = require('../config/apiMapper');
-const { gateway,gatewayClientToken } = require('../config/config');
+const { gateway, gatewayClientToken } = require('../config/config');
 
 const processInterceptRequest = async (requestPayload) => {
   const mappedObj = apiMapper(requestPayload);
@@ -8,7 +8,8 @@ const processInterceptRequest = async (requestPayload) => {
     const options = {
       url: `${gateway}/${mappedObj.url}`,
       method: mappedObj.method,
-      data: mappedObj.params,
+      data: mappedObj.data,
+      params: mappedObj.params,
       headers: {
         Accept: '*/*',
         'Cache-Control': 'no-cache',

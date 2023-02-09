@@ -19,7 +19,7 @@ export default function ProductsListSection() {
   const sellerOrdersRedux = useSelector((state) => state.dashboardReducer.get('sellerOndcProducts'));
   const dateFns = new DateFnsAdapter({ locale: enIN });
   const [filterParams, setFilterParams] = React.useState({
-    start_time: dateFns.formatByString(dateFns.addMonths(new Date(), -1), 'dd/MM/yyyy'),
+    start_time: '09/02/2023',
     end_time: dateFns.formatByString(new Date(), 'dd/MM/yyyy'),
   });
 
@@ -29,6 +29,7 @@ export default function ProductsListSection() {
         per_page: 20,
         page,
         ...filters,
+        start_time: '09/02/2023',
       },
     };
     dispatch(getSellerProducts({ currentQuery: query, type: page == 1 ? 'initial' : 'pagination' }));
@@ -36,7 +37,7 @@ export default function ProductsListSection() {
 
   React.useEffect(() => {
     getData(1, filterParams);
-  },[filterParams])
+  }, [filterParams]);
 
   const { sellerOrders, orderArray, totalRecords, currentQuery } = React.useMemo(() => {
     let sellerOrders = [],
@@ -54,7 +55,7 @@ export default function ProductsListSection() {
   }, [sellerOrdersRedux]);
 
   const dateFormat = ({ value }) => {
-    if (value) return dateFns.formatByString(dateFns.parseISO(value), 'dd-MM-yyyy HH:MM:SS');
+    if (value) return dateFns.formatByString(dateFns.parseISO(value), 'dd/MM/yyyy HH:MM:SS');
     return '';
   };
 
@@ -64,7 +65,7 @@ export default function ProductsListSection() {
       headerName: 'Buyer Name',
       minWidth: 500,
       valueGetter: ({ value }) => {
-        return value?value.split('+')[0].split('<27>')[0]:'';
+        return value ? value.split('+')[0].split('<27>')[0] : '';
       },
     },
     { field: 'seller_np_name', headerName: 'Seller Name', minWidth: 200 },
@@ -97,7 +98,10 @@ export default function ProductsListSection() {
 
   const onGetReport = async () => {
     const dataType = 'text/csv';
-    const payload = { days: 30 };
+    const payload = {
+      start_time: '09/02/2023',
+      end_time: dateFns.formatByString(new Date(), 'dd/MM/yyyy'),
+    };
     const res = await exportOrderCSVApi(payload);
     if (res) {
       const fileBlob = new Blob([res], { type: dataType });
@@ -106,7 +110,7 @@ export default function ProductsListSection() {
   };
 
   const onLoadMore = () => {
-    getData(currentQuery.params.page + 1,filterParams);
+    getData(currentQuery.params.page + 1, filterParams);
   };
 
   return (
@@ -124,7 +128,7 @@ export default function ProductsListSection() {
             >
               <Grid item>
                 <DatePicker
-                  label="End Date"
+                  label="Start Date"
                   format="dd/MM/yyyy"
                   disableFuture
                   value={filterParams?.start_time && dateFns.parse(filterParams?.start_time, 'dd/MM/yyyy')}

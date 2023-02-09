@@ -130,7 +130,6 @@ export default function ProductsListSection() {
                 <DatePicker
                   label="Start Date"
                   format="dd/MM/yyyy"
-                  disableFuture
                   value={filterParams?.start_time && dateFns.parse(filterParams?.start_time, 'dd/MM/yyyy')}
                   onChange={(newValue) => {
                     setFilterParams((currentParams) => ({
@@ -145,7 +144,6 @@ export default function ProductsListSection() {
                 <DatePicker
                   label="End Date"
                   format="dd/MM/yyyy"
-                  disableFuture
                   value={filterParams?.end_time && dateFns.parse(filterParams?.end_time, 'dd/MM/yyyy')}
                   onChange={(newValue) => {
                     setFilterParams((currentParams) => ({

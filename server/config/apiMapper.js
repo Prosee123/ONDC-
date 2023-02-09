@@ -4,7 +4,6 @@ function apiMapper(requestBody) {
   switch (requestBody.name) {
     case 'R_GET_ONDC_ORDERS':
     case 'R_GET_ONDC_ORDERS_CSV':
-      console.log(requestBody);
       return {
         method: 'post',
         params: { ...requestBody.params },

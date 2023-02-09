@@ -99,8 +99,9 @@ export default function ProductsListSection() {
   const onGetReport = async () => {
     const dataType = 'text/csv';
     const payload = {
+      ...filterParams,
       start_time: '09/02/2023',
-      end_time: dateFns.formatByString(new Date(), 'dd/MM/yyyy'),
+      // end_time: dateFns.formatByString(dateFns.addDays(new Date(), 1),'dd/MM/yyyy'),
     };
     const res = await exportOrderCSVApi(payload);
     if (res) {

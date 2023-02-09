@@ -21,8 +21,8 @@ export default function ProductsListSection() {
   const sellerOrdersRedux = useSelector((state) => state.dashboardReducer.get('sellerOndcProducts'));
   const dateFns = new DateFnsAdapter({ locale: enIN });
   const [filterParams, setFilterParams] = React.useState({
-    start_time: '09/02/2023',
-    end_time: dateFns.formatByString(new Date(), 'dd/MM/yyyy'),
+    // start_time: '09/02/2023',
+    // end_time: dateFns.formatByString(new Date(), 'dd/MM/yyyy'),
   });
 
   const getData = useDebouncedCallback((page = 1, filters = {}) => {
@@ -31,7 +31,7 @@ export default function ProductsListSection() {
         per_page: 20,
         page,
         ...filters,
-        start_time: '09/02/2023',
+        // start_time: '09/02/2023',
       },
     };
     dispatch(getSellerProducts({ currentQuery: query, type: page == 1 ? 'initial' : 'pagination' }));

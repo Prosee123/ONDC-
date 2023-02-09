@@ -8,6 +8,7 @@ import {
 import Login from "../views/login/login";
 import OndcDashboard from "../views/ondc-dashboard/ondc-dashboard";
 import history from "./history";
+import { ThemeProvider, createTheme } from '@mui/material';
 
 const routes = [
     {
@@ -35,13 +36,17 @@ const routes = [
 ];
 
 export default function RouteConfig() {
+    const defaultMaterialTheme = createTheme();
     return (
-        <Router >
-            <Routes>
-                <Route path="/dashboard" element={<OndcDashboard/>}/>
-                <Route exact path="/" element={<Login/>}/>
-            </Routes>
-        </Router>
+        <ThemeProvider theme={defaultMaterialTheme}>
+            <Router >
+
+                <Routes>
+                    <Route path="/dashboard" element={<OndcDashboard />} />
+                    <Route exact path="/" element={<Login />} />
+                </Routes>
+            </Router>
+        </ThemeProvider>
     );
 }
 

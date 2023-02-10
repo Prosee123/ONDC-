@@ -115,9 +115,7 @@ export default function ProductsListSection() {
     getData(currentQuery.params.page + 1, filterParams);
   };
 
-  if (orderArray?.length)
     return (
-      <>
         <div style={{ height: '70vh', width: '100%' }}>
           <Grid container justifyContent="space-between" alignItems="center" padding={2}>
             <Grid item>
@@ -171,24 +169,28 @@ export default function ProductsListSection() {
           hideFooter
         /> */}
 
-          <MaterialTable
-            options={{
-              toolbar:false,
-              search: false,
-              paging: false,
-              sorting:false,
-              headerStyle:{
-                fontWeight:'bold'
-              }
-            }}
-            title={null}
-            columns={columns}
-            data={orderArray}
-          />
-          <Button disabled={totalRecords === orderArray?.length} onClick={onLoadMore}>
-            Load More {totalRecords - orderArray?.length}
-          </Button>
+        {orderArray?.length > 0 &&
+          <>
+            <MaterialTable
+              options={{
+                toolbar: false,
+                search: false,
+                paging: false,
+                sorting: false,
+                headerStyle: {
+                  fontWeight: 'bold'
+                }
+              }}
+              title={null}
+              columns={columns}
+              data={orderArray}
+            />
+            <Button disabled={totalRecords === orderArray.length} onClick={onLoadMore}>
+              Load More {totalRecords - orderArray?.length}
+            </Button>
+          </>
+        }
+
         </div>
-      </>
     );
 }

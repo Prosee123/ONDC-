@@ -1,16 +1,13 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { makeStyles } from '@mui/styles';
 
 import Container from '@mui/material/Container'
 import Button from '@mui/material/Button'
 import { useNavigate } from "react-router-dom";
-
-import HeaderSearch from '../../components/ondc-dashboard/header-search';
 import FiltersProductsSection from '../../container/ondc-dashboard/filters-products-section';
-
-import { getSellerProducts } from './state/action';
 import { useDispatch } from 'react-redux';
 import { onUserLogout } from './state/action';
+import { getAuthToken } from '../../utils/miscellaneous/mics';
 
 const useStyles = makeStyles({
     ondcDashboard: {
@@ -45,7 +42,7 @@ const OndcDashboard = () => {
     const ondcLogo = 'https://ndh.imgix.net/ndh-assets/img/ondc_logo.png';
 
     const onSuccessLogout = () => {
-        navigate('/')
+        navigate('/login')
     }
     const onLogout = () => {
         const payload = {
@@ -54,6 +51,14 @@ const OndcDashboard = () => {
         }
         dispatch(onUserLogout(payload))
     }
+
+    useEffect(() => {
+      const authToken = getAuthToken() || null;
+      if( !authToken ) {
+        onLogout();
+      }
+    }, [])
+
     return (
       <Container maxWidth>
         <div className={classes.ondcDashboard}>

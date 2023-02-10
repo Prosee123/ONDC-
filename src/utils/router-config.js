@@ -1,50 +1,17 @@
 import React from "react";
 import {
     BrowserRouter as Router,
-    Routes,
-    Route,
-    Link
+    Route
 } from "react-router-dom";
-import Login from "../views/login/login";
-import OndcDashboard from "../views/ondc-dashboard/ondc-dashboard";
-import history from "./history";
 import { ThemeProvider, createTheme } from '@mui/material';
-
-const routes = [
-    {
-        path: "/login",
-        component: Login
-    },
-    {
-        path: "/ondc-dashboard",
-        component: OndcDashboard
-    },
-    //   {
-    //     path: "/tacos",
-    //     component: Tacos,
-    //     routes: [
-    //       {
-    //         path: "/tacos/bus",
-    //         component: Bus
-    //       },
-    //       {
-    //         path: "/tacos/cart",
-    //         component: Cart
-    //       }
-    //     ]
-    //   }
-];
+import RenderRoutes from "./routes/render-route";
 
 export default function RouteConfig() {
     const defaultMaterialTheme = createTheme();
     return (
         <ThemeProvider theme={defaultMaterialTheme}>
             <Router >
-
-                <Routes>
-                    <Route path="/dashboard" element={<OndcDashboard />} />
-                    <Route exact path="/" element={<Login />} />
-                </Routes>
+                <RenderRoutes />                
             </Router>
         </ThemeProvider>
     );

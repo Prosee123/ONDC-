@@ -173,9 +173,15 @@ export default function ProductsListSection() {
 
           <MaterialTable
             options={{
+              toolbar:false,
               search: false,
-              paging: false
+              paging: false,
+              sorting:false,
+              headerStyle:{
+                fontWeight:'bold'
+              }
             }}
+            title={null}
             columns={columns}
             data={orderArray}
           />

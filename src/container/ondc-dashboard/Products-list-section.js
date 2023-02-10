@@ -6,13 +6,15 @@ import fileSaver from 'file-saver';
 import { exportOrderCSVApi } from '../../views/ondc-dashboard/state/api';
 import { Parser } from 'json2csv';
 import { getSellerProducts } from '../../views/ondc-dashboard/state/action';
-import { DataGrid } from '@mui/x-data-grid';
+// import { DataGrid } from '@mui/x-data-grid';
 import { Grid, TextField } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import DateFnsAdapter from '@date-io/date-fns';
 import enIN from 'date-fns/locale/en-IN';
 import { useDebouncedCallback } from 'use-debounce';
+
+import MaterialTable from 'material-table'
 
 export default function ProductsListSection() {
   const dispatch = useDispatch();
@@ -54,46 +56,45 @@ export default function ProductsListSection() {
     return { sellerOrders, orderArray, totalRecords, currentQuery };
   }, [sellerOrdersRedux]);
 
-  const dateFormat = ({ value }) => {
+  const dateFormat = (rowData, field) => {
+    const value = rowData[field];
     if (value) return dateFns.formatByString(dateFns.parseISO(value), 'dd/MM/yyyy HH:MM:SS');
     return '';
   };
 
   const columns = [
-    {
-      field: 'buyer_np_name',
-      headerName: 'Buyer Name',
-      minWidth: 500,
-      valueGetter: ({ value }) => {
-        return value ? value.split('+')[0].split('<27>')[0] : '';
-      },
-    },
-    { field: 'seller_np_name', headerName: 'Seller Name', minWidth: 200 },
-    { field: 'created_at', headerName: 'Created At', minWidth: 200, type: 'dateTime', valueGetter: dateFormat },
-    { field: 'updated_at', headerName: 'Updated At', minWidth: 200, type: 'dateTime', valueGetter: dateFormat },
-    { field: 'network_order_id', headerName: 'Network order ID', minWidth: 200 },
-    { field: 'network_transaction_id', headerName: 'Transaction Id', minWidth: 120 },
-    { field: 'seller_np_order_id', headerName: 'Seller Order Id', minWidth: 120 },
-    { field: 'seller_np_type', headerName: 'Seller Type', minWidth: 120 },
-    { field: 'order_status', headerName: 'Order Status', minWidth: 120 },
-    { field: 'name_of_seller', headerName: 'Seller Name', minWidth: 200 },
-    { field: 'seller_pincode', headerName: 'Seller Pincode', minWidth: 120 },
-    { field: 'sku_name', headerName: 'Sku Name', minWidth: 200 },
-    { field: 'sku_code', headerName: 'Sku Code', minWidth: 200 },
-    { field: 'product_price', headerName: 'Product Price', minWidth: 120 },
-    { field: 'order_category', headerName: 'Order Category', minWidth: 150 },
-    { field: 'ready_to_ship_at', headerName: 'Ready to Ship At', minWidth: 200, type: 'dateTime', valueGetter: dateFormat },
-    { field: 'shipped_at', headerName: 'Shipped At', minWidth: 200, type: 'dateTime', valueGetter: dateFormat },
-    { field: 'delivered_at', headerName: 'Delivered At', minWidth: 200, type: 'dateTime', valueGetter: dateFormat },
-    { field: 'delivery_type', headerName: 'Delivered Type', minWidth: 120 },
-    { field: 'logistics_network_order_id', headerName: 'Logistic Network ID', minWidth: 150 },
-    { field: 'logistics_network_transaction_id', headerName: 'Logistic Network transaction ID', minWidth: 220 },
-    { field: 'delivery_city', headerName: 'Delivery City', minWidth: 150 },
-    { field: 'delivery_pincode', headerName: 'Delivered Pincode', minWidth: 150 },
-    { field: 'cancelled_at', headerName: 'Cancelled At', minWidth: 200, type: 'dateTime', valueGetter: dateFormat },
-    { field: 'cancelled_by', headerName: 'Cancelled By', minWidth: 200 },
-    { field: 'cancellation_reason', headerName: 'Cancelled Reason', minWidth: 200 },
-    { field: 'total_order_value', headerName: 'Total Order Value', minWidth: 150 },
+    { field: 'buyer_no', title: 'Buyer No', minWidth: 200 },
+    { field: 'buyer_np_name', title: 'Buyer Name', minWidth: 500, valueGetter: ({ value }) => { return value ? value.split('+')[0].split('<27>')[0] : ''; }, },
+    { field: 'cancellation_reason', title: 'Cancelled Reason', minWidth: 200 },
+    { field: 'cancelled_at', title: 'Cancelled At', minWidth: 200, type: 'dateTime', render: (rowData) => dateFormat(rowData, 'cancelled_at') },
+    { field: 'cancelled_by', title: 'Cancelled By', minWidth: 200 },
+    { field: 'created_at', title: 'Created At', minWidth: 200, type: 'dateTime', render: (rowData) => dateFormat(rowData, 'created_at') },
+    { field: 'delivered_at', title: 'Delivered At', minWidth: 200, type: 'dateTime', render: (rowData) => dateFormat(rowData, 'delivered_at') },
+    { field: 'delivery_city', title: 'Delivery City', minWidth: 150 },
+    { field: 'delivery_pincode', title: 'Delivered Pincode', minWidth: 150 },
+    { field: 'delivery_type', title: 'Delivered Type', minWidth: 120 },
+    { field: 'id', title: 'ID', minWidth: 120 },
+    { field: 'logistic_seller_np_name', title: 'logistic Seller Np Name', minWidth: 120 },
+    { field: 'logistics_network_order_id', title: 'Logistic Network ID', minWidth: 150 },
+    { field: 'logistics_network_transaction_id', title: 'Logistic Network transaction ID', minWidth: 220 },
+    { field: 'name_of_seller', title: 'Seller Name', minWidth: 200 },
+    { field: 'network_order_id', title: 'Network order ID', minWidth: 200 },
+    { field: 'network_transaction_id', title: 'Transaction Id', minWidth: 120 },
+    { field: 'order_category', title: 'Order Category', minWidth: 150 },
+    { field: 'order_status', title: 'Order Status', minWidth: 120 },
+    { field: 'ready_to_ship_at', title: 'Ready to Ship At', minWidth: 200, type: 'dateTime', render: (rowData) => dateFormat(rowData, 'ready_to_ship_at') },
+    { field: 'seller_city', title: 'Seller City', minWidth: 120 },
+    { field: 'seller_np_name', title: 'Seller Name', minWidth: 200 },
+    { field: 'seller_np_order_id', title: 'Seller Order Id', minWidth: 120 },
+    { field: 'seller_np_type', title: 'Seller Type', minWidth: 120 },
+    { field: 'seller_pincode', title: 'Seller Pincode', minWidth: 120 },
+    { field: 'shipped_at', title: 'Shipped At', minWidth: 200, type: 'dateTime', render: (rowData) => dateFormat(rowData, 'shipped_at') },
+    { field: 'shipping_charge_total', title: 'shipping Charge Total', minWidth: 120 },
+    { field: 'shipping_charges', title: 'shipping Charge Total', minWidth: 120 },
+    { field: 'sku_code', title: 'Sku Code', minWidth: 200 },
+    { field: 'sku_name', title: 'Sku Name', minWidth: 200 },
+    { field: 'total_order_value', title: 'Total Order Value', minWidth: 150 },
+    { field: 'updated_at', title: 'Updated At', minWidth: 200, type: 'dateTime', render: (rowData) => dateFormat(rowData, 'updated_at') },
   ];
 
   const onGetReport = async () => {
@@ -114,62 +115,80 @@ export default function ProductsListSection() {
     getData(currentQuery.params.page + 1, filterParams);
   };
 
-  return (
-    <>
-      <div style={{ height: '70vh', width: '100%' }}>
-        <Grid container justifyContent="space-between" alignItems="center" padding={2}>
-          <Grid item>
-            <Button onClick={onGetReport}> Export </Button>
+  if (orderArray?.length)
+    return (
+      <>
+        <div style={{ height: '70vh', width: '100%' }}>
+          <Grid container justifyContent="space-between" alignItems="center" padding={2}>
+            <Grid item>
+              <Button onClick={onGetReport}> Export </Button>
+            </Grid>
+            <Grid item container spacing={2}>
+              <LocalizationProvider
+                dateAdapter={AdapterDateFns}
+                dateFormats={{ keyboardDate: 'dd/MM/yyyy' }}
+                adapterLocale={enIN}
+              >
+                <Grid item>
+                  <DatePicker
+                    label="Start Date"
+                    format="dd/MM/yyyy"
+                    disableFuture
+                    value={filterParams?.start_time && dateFns.parse(filterParams?.start_time, 'dd/MM/yyyy')}
+                    onChange={(newValue) => {
+                      setFilterParams((currentParams) => ({
+                        ...currentParams,
+                        start_time: newValue ? dateFns.formatByString(newValue, 'dd/MM/yyyy') : undefined,
+                      }));
+                    }}
+                    renderInput={(params) => <TextField {...params} />}
+                  />
+                </Grid>
+                <Grid item>
+                  <DatePicker
+                    label="End Date"
+                    format="dd/MM/yyyy"
+                    disableFuture
+                    value={filterParams?.end_time && dateFns.parse(filterParams?.end_time, 'dd/MM/yyyy')}
+                    onChange={(newValue) => {
+                      setFilterParams((currentParams) => ({
+                        ...currentParams,
+                        end_time: newValue ? dateFns.formatByString(newValue, 'dd/MM/yyyy') : undefined,
+                      }));
+                    }}
+                    renderInput={(params) => <TextField {...params} />}
+                  />
+                </Grid>
+              </LocalizationProvider>
+            </Grid>
           </Grid>
-          <Grid item container spacing={2}>
-            <LocalizationProvider
-              dateAdapter={AdapterDateFns}
-              dateFormats={{ keyboardDate: 'dd/MM/yyyy' }}
-              adapterLocale={enIN}
-            >
-              <Grid item>
-                <DatePicker
-                  label="Start Date"
-                  format="dd/MM/yyyy"
-                  value={filterParams?.start_time && dateFns.parse(filterParams?.start_time, 'dd/MM/yyyy')}
-                  onChange={(newValue) => {
-                    setFilterParams((currentParams) => ({
-                      ...currentParams,
-                      start_time: newValue ? dateFns.formatByString(newValue, 'dd/MM/yyyy') : undefined,
-                    }));
-                  }}
-                  renderInput={(params) => <TextField {...params} />}
-                />
-              </Grid>
-              <Grid item>
-                <DatePicker
-                  label="End Date"
-                  format="dd/MM/yyyy"
-                  value={filterParams?.end_time && dateFns.parse(filterParams?.end_time, 'dd/MM/yyyy')}
-                  onChange={(newValue) => {
-                    setFilterParams((currentParams) => ({
-                      ...currentParams,
-                      end_time: newValue ? dateFns.formatByString(newValue, 'dd/MM/yyyy') : undefined,
-                    }));
-                  }}
-                  renderInput={(params) => <TextField {...params} />}
-                />
-              </Grid>
-            </LocalizationProvider>
-          </Grid>
-        </Grid>
-        <DataGrid
+          {/* <DataGrid
           columns={columns}
           rows={orderArray}
           initialState={{
             orderArray,
           }}
           hideFooter
-        />
-        <Button disabled={totalRecords === orderArray?.length} onClick={onLoadMore}>
-          Load More {totalRecords - orderArray?.length}
-        </Button>
-      </div>
-    </>
-  );
+        /> */}
+
+          <MaterialTable
+            options={{
+              toolbar:false,
+              search: false,
+              paging: false,
+              sorting:false,
+              headerStyle:{
+                fontWeight:'bold'
+              }
+            }}
+            title={null}
+            columns={columns}
+            data={orderArray}
+          />
+          <Button disabled={totalRecords === orderArray?.length} onClick={onLoadMore}>
+            Load More {totalRecords - orderArray?.length}
+          </Button>
+        </div>
+      </>
+    );
 }
